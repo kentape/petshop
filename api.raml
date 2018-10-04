@@ -1,0 +1,38 @@
+#%RAML 1.0
+title: Pet shop
+uses:
+  Library: Library.raml
+version: v1
+baseUri: /petshop
+types:
+  Mammal:
+    type: Library.Pet
+  Bird:
+    type: Library.Pet
+    properties:
+      wingLength: number
+
+resourceTypes:
+/pets:
+  type:  { Library.Collection: {item : Library.Pet} }
+  get:
+    is: [Library.FilterableByPrice]
+    queryParameters:
+      petKind:
+        enum: [bird, mammal]
+  /{id}:
+    type:  { Library.Member: {item : Library.Pet} }
+
+/birds:
+  type:  { Library.Collection: {item : Bird} }
+  get:
+    is: [Library.FilterableByPrice]
+  /{id}:
+    type:  { Library.Member: {item : Bird} }
+
+/mammals:
+  type:  { Library.Collection: {item : Mammal} }
+  get:
+    is: [Library.FilterableByPrice]
+  /{id}:
+    type:  { Library.Member: {item : Mammal} }
